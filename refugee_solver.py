@@ -20,27 +20,27 @@ travel_routes = [
 ]
 
 danger_edge = {
-    ("Syria", "Hungary"): 1,
-    ("Hungary", "Germany"): 1,
-    ("Tunisia", "Greece"): 1,
-    ("Greece", "Germany"): 5,
-    ("Greece", "Hungary"): 1
+    ("Syria", "Hungary"): 1.0,
+    ("Hungary", "Germany"): 1.0,
+    ("Tunisia", "Greece"): 1.0,
+    ("Greece", "Germany"): 5.0,
+    ("Greece", "Hungary"): 1.0
 }
 
 country_capacity = {
-    "Germany":100,
-    "Syria":0,
-    "Tunisia":0,
-    "Greece":50,
-    "Hungary":100
+    "Germany":100.0,
+    "Syria":0.0,
+    "Tunisia":0.0,
+    "Greece":50.0,
+    "Hungary":100.0
 }
 
 country_refugees = {
-    "Germany":0,
-    "Syria":150,
-    "Tunisia":100,
-    "Greece":0,
-    "Hungary":0
+    "Germany":0.0,
+    "Syria":150.0,
+    "Tunisia":100.0,
+    "Greece":0.0,
+    "Hungary":0.0
 }
 
 def danger(node_tuple):
@@ -66,7 +66,7 @@ b = np.array([])
 
 # Generate source rows
 for country in (country for country in countries if is_source[country]):
-    newrow = np.array([(1 if path[0] == country else 0) for path in paths])
+    newrow = np.array([(1.0 if path[0] == country else 0.0) for path in paths])
     if (M.shape == (0,)): M = np.vstack([newrow, -newrow])
     else:
         M = np.vstack([M, newrow])
@@ -75,7 +75,7 @@ for country in (country for country in countries if is_source[country]):
     else: b = np.vstack([b, country_refugees[country], -country_refugees[country]])
 
 for country in (country for country in countries if not is_source[country]):
-    newrow = np.array([(1 if path[-1] == country else 0) for path in paths])
+    newrow = np.array([(1.0 if path[-1] == country else 0.0) for path in paths])
     M = np.vstack([M, newrow])
     b = np.vstack([b, country_capacity[country]])
 
@@ -86,12 +86,13 @@ for i in range(len(paths)): print(paths[i], x[i])
 
 Q = 2*B*np.identity(len(paths))
 
-print(matrix(Q))
-print(matrix(f))
-print(matrix(M))
-print(matrix(b))
+better_x = solvers.qp(matrix(Q), matrix(f), matrix(M), matrix(b))['x']
+for i in range(len(paths)): print(paths[i], better_x[i])
 
-print(solvers.qp(matrix(Q), matrix(f), matrix(M), matrix(b)))
+#print(matrix(Q))
+#print(matrix(f))
+#print(matrix(M))
+#print(matrix(b))
 
 #print(M)
 #print(b)
