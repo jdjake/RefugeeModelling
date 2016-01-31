@@ -131,11 +131,13 @@ $http://www.pewresearch.org/fact-tank/2015/04/24/refugees-stream-into-europe-whe
 
 \section{Linear Programming}
 
-We wish to find the optimal travel routes for refugees emmigrating for asylum. The vast majority of these countries are found in the Middle East through to Western Europe, and it would be economically unfeasible to pay to emmigrate a large portion of refugees across the ocean, so we shall focus only on emmigration to these states.
+Our goal is to identify the optimal travel routes for refugees emmigrating for asylum. According to data from the UNCHCR Global Trends 2014, ongoing conflicts in Syria and Afghanistan and other countries in the Middle East and Africa are the largest source of refugees\footnote{$http://ec.europa.eu/echo/files/aid/countries/factsheets/thematic/refugees_en.pdf$}. Many of these refugees flee to neighbouring countries in the Middle East\footnote{$http://ec.europa.eu/echo/files/aid/countries/factsheets/thematic/refugees_en.pdf$}. We are interested in modeling refugee travel from refugee camps, or source nodes, in the Middle East to European countries where the refugees may be integrated into society. It is not economically feasible to move large numbers of refugees across the Atlantic Ocean to North America due to the large distance and travel costs involved, so refugee movement to countries such as Canada and the United States will not be addressed in this model. 
 
-We must optimize the travel routes of refugees, under realistic constraints which prevent a utopian immigration process. This is most naturally formed as a linear program. For each route that refugees could travel, we allocate a certain number of refugees. We wish to prevent overcrowding routes, and sending refugees down dangerous routes -- these concerns will be summarized by a risk metric. We cannot settle down more refugees in a country then that country can handle. Furthermore, we cannot leave any refugee who wants to leave behind -- as we have seen in recent years, refugees will attempt any desparate means to escape their home country. An unorganized approach will likely result in more damage than is desired.
+We must optimize the travel routes of refugees for safety and efficiency, under realistic constraints that prevent a utopian immigration process. This is most naturally formed as a linear program. For each route that refugees could travel, we allocate a certain number of refugees. We wish to prevent overcrowding routes and to avoid sending refugees down dangerous routes because an optimal travel route is safe. Safety concerns will be incorporated into our model with a risk parameter. 
 
-We begin by forming a directed graph, summarizing the routes that refugees can take. For each simple path $(v_1, \dots, v_n)$ in the graph (for refugees are unlikely to take cyclic routes) we allocate a certain number $x_{(v_1, \dots, v_n)} \in \mathbf{R}$, which represents the number of refugees allocated to that route. Our prior constraints can be summarized by the following equations
+Given a country's refugee quota (See Table 1 INSERT TABLE HERE PLEASE) we define that value as the capacity ($C_w$) of any given destination country $w$, or the maximum number of refugees that may settle in that country. The capacity incorporates the fact that there are limited resources available for refugee support in Europe. However, there may be a greater demand for those resources than can be accomodated. More refugees may enter the system than can be accomodated by every destination country even at their maximum capacity. This information can be used to decide which policy decisions should be made in order to organize refugee movement.
+
+We begin by forming a directed graph, summarizing the routes that refugees can take. We consider ach simple path $(v_1, \dots, v_n)$ in the graph because refugees are unlikely to take cyclic routes. For each simple path, we allocate a specific number $x_{(v_1, \dots, v_n)} \in \mathbf{R}$, that represents the number of refugees allocated to that route. ADD ILLUSTRATIVE GRAPH HERE The constraints previously described can be summarized by the following equations
 
 \begin{enumerate}
     \item (No Refugee Left Behind) For every source node $v$, we have
@@ -144,22 +146,22 @@ We begin by forming a directed graph, summarizing the routes that refugees can t
     %
     Where $R_v$ is the number of refugees exiting the node $v$.
 
-    \item (Every Country has a Capacity) For each possible country $w$ in which a refugee may take asylum, we have
+    \item (Every Country has a Capacity) For each possible country, $w$, in which a refugee may take asylum, we have
     %
     \[ \sum_{\substack{(v_1, \dots, v_n) \\ v_n = w}} x_{(v_1, \dots, v_n)} \leq C_w \]
     %
     Where $C_w$ is the capacity of the node $w$.
 \end{enumerate}
 
-We formulate risk as a quadratic constraint with multiple factors. First, we take the risk of a route into account. We associate a certain `risk constant' $K_{(v,w)}$ to each edge $(v,w)$ in the graph, which represents the probability of death of a single refugee travelling along that edge. Of course, if $n$ refugees travel along this path, then the expected number of death is $n K_{(v,w)}$. The risk of death travelling along a certain path $(v_1, \dots, v_n)$ is then compounded. By basic laws of probability, we have
+We formulate risk as a quadratic constraint with multiple factors. First, we take the risk of a route into account. Each edge $(v,w)$ in the graph is associated with a certain `risk constant' $K_{(v,w)}$ that represents the probability of death for a single refugee travelling along that edge. Of course, if $n$ refugees travel along this path, then the expected number of deaths is $n K_{(v,w)}$. The risk of death travelling along a certain path $(v_1, \dots, v_n)$ is then compounded. By basic laws of probability, we have
 %
 \[ K_{(v_1, \dots, v_n)} = \sum_{i = 1}^n \left( \prod_{j = 1}^{i-1} \left(1 - K_{(v_j,v_{j+1})} \right) \right) K_{(v_i, v_{i+1})} \]
 %
-This shall form our first linear constraint on the system.
+This expression of risk forms our first linear constraint on the system.
 
-Our second concern is overcrowding. In an overcrowded group, disease, fighting and \underline{\ \ \ \ \ } are likely to cause harm to travelling refugees. This is a rather simple constant to form. In a group of $n$ people, the number of interactions is approximately quadratic, and thus the chance of disease or other factor if quadratic. We assume (or approximate) that there exists a constant $B$ such that the change of death of $x$ people on a route is $Bx^2$.
+Our second concern is overcrowding. In an overcrowded group factors such as disease and crime are likely to cause harm to travelling refugees, so the density of travellers must be considered. This is a rather simple constant to form. The number of interations within a population of size $n$ is quadratically related to population density. It follows that the risk factors are quadratically related to population density. We assume that there exists a constant $B$ such that the relationship of death rates for $x$ people on a given route is approximated by $Bx^2$. 
 
-One final concern is that refugees do not wish to travel paths which are too long and arduous for them to travel. Therefore, if we have a distance function $d$ on the vertices, giving us the length of a route to travel from one vertex to another, then refugees will travel a distance proportional to the sum of the distances of the edges they travel along. Thus we add another constant $C$ relative to the distance traveled by refugees which causes a route to be dangerous.
+Finally, the idea that shorter paths are more optimal needs to be incorporated in to the model. If we have a distance function $d$ on the vertices that provides the length of a route to travel from one vertex to another, then refugees will travel a distance proportional to the sum of the distances of the edges they travel along. Thus we add another constant $C$ relative to the distance traveled by refugees because longer routes are more dangerous.
 
 We have thus formulated enough constraints and costs to form a quadratic program.  The standard form of the optimization problem is detailed below:
 %
