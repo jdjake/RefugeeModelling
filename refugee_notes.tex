@@ -5,13 +5,33 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{cite}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usepackage{verbatim}
+\usepackage[active,tightpage]{preview}
+\usepackage{fancyheadings}
 
-\title{Develop a Better Understanding of the Factors Involved With Facilitating the Movement of Refugees From Their Countries of Origin Into Safe Haven Countries}
-\author{Nobody in Particular}
+\pagestyle{fancy}
+
+\fancyhead[C]{Team 53506}
+\fancyhead[R]{\thepage}
+
+\usetikzlibrary{arrows}
+
+\title{Safer Migration Strategies For Refugee Populations}
+\author{Team 53506}
 
 \begin{document}
 
+\pagenumbering{gobble}
 \maketitle
+\tableofcontents
+
+\maketitle
+
+\newpage
+
+\pagenumbering{arabic}
 
 Humanitarian organizations that aim to settle refugees in Europe are currently facing new challenges because refugees are coming from outside Europe in larger numbers than ever before\footnote{http://www.bbc.com/news/world-35091772}. One of these organizations, the office of the United Nations High Commissioner for Refugees (UNHCR) was initially formed in 1950 with the intent to help Europeans displaced by World War II\footnote{http://www.unhcr.org/pages/49c3646cbc.html}. Since its inception the UNHCR has provided aid to refugees, internally dispaced people, stateless people, and asylum seekers from emergencies originating within Europe and, increasingly, outside of Europe.\footnote{http://www.unhcr.org/pages/49c3646cbc.html}.
 
@@ -78,7 +98,7 @@ This problem breaks down into multiple problems.
     Starting with a basic model, each possible country near Europe where there may be a substantial refugee population is represented as a vertex on a graph. The edges between vertices represent the connectivity between locations for refugees. Rates of travel along edges may vary based on qualities of the travel route including capacity, distance, modes of transportation available and risk to migrants. Once these variables and parameters are related on a graph, we need to learn about the dynamics of the system.
 
 
-    One way to inform the movement of refugees from their country of origin into safe haven countries is to learn about how our system behaves when safety and efficiency are optimized. Safety and efficiency are optimized when risk is minimized and \underline{\ \ \ \ }, respectively. Risk and \underline{\ \ \ \ } can be combined linearly, resulting in an overall measure that determines We chose to use linear programming to optimize our system because it can always be solved. 
+    One way to inform the movement of refugees from their country of origin into safe haven countries is to learn about how our system behaves when safety and efficiency are optimized. Safety and efficiency are optimized when risk is minimized and \underline{\ \ \ \ }, respectively. Risk and \underline{\ \ \ \ } can be combined linearly, resulting in an overall measure that determines We chose to use linear programming (as in \cite{bertsekas}) to optimize our system because it can always be solved. 
 
     Question?
 
@@ -205,9 +225,11 @@ In its current form, our linear program does not take into account the intersect
 
 We could discard this assumption as a quirk of the model, besides the fact that it becomes a problem when trying to find the path correlation coefficients $B_{(v_1, \dots, v_n) (w_1, \dots, w_m)}$. Consider the diagram below, consisting of two curves, together with parameterizations $c$ and $c'$ with unit velocity. These curve represent one of the possible paths that refugees can take. When we model the movement of refugees as a single point on the line, then the movement of two groups of refugees coincides when $c(t) = c'(t)$. If the traces of $c$ and $c'$ intersect, but hit all points in the intersection at different times, then our model would determine that these groups never meet each other. On the other hand, we cannot just take the traces as evidence for congestion, for we would like to increase the importance of an intersection $c(t) = c(t')$ when $t$ and $t'$ are very close, and decrease the importance when the time points are far apart. After a long time, most refugees will have moved away from this point, so congestion is near negligable. We solve this problem by taking a stochastic movement along these curves, determining the expected intersection probability when two groups encounter one another.
 
-INSERT IMAGE OF CURVES $c$ AND $c'$ HERE
+\begin{center}
+s
+\end{center}
 
-To accomodate the random motion of population migration, we apply the theory of stochastic processes. Begin by making the following assumptions
+To accomodate the random motion of population migration, we apply the theory of stochastic processes, as developed in \cite{lawler}. Begin by making the following assumptions
 %
 \begin{enumerate}
     \item {\it Every immigrant starts the route at the start point.} Technically, immigrants could leave from various parts of a certain country, or join a group of refugees after they have already begun travelling.
@@ -220,15 +242,13 @@ Now we calculate the coefficient of immigration. First, we pull back the curve $
 %
 \[ X_t = \varepsilon W_t + t \]
 %
-where $\varepsilon$ is a small constant, and $W_t$ is standard brownian motion. We construct an independant task for each path $(v_1, \dots, v_n)$, represented by a curve $c$. If $X_t$ is such an equation, then $c(X_t)$ gives us a stochastic process on the path in the graph. We wish to measure, in some capacity, the `population correlation' between the stochastic processes $c(X_t)$ and $c'(Y_t)$. We cannot use the probability that two particular instances of the motion meet at a certain time point, since $\mathbf{P}(c(X_t) = c'(Y_t)) = 0$ for all values of $t$. The best we can do is approximate two populations coinciding; fixing a small $\varepsilon'$, we consider the `intersection quantity'
+where $\varepsilon$ is a small constant, and $W_t$ is standard brownian motion. We construct an independant task for each path $(v_1, \dots, v_n)$, represented by a curve $c$. If $X_t$ is such an equation, then $c(X_t)$ gives us a stochastic process on the path in the graph. We wish to measure, in some capacity, the `population correlation' between the stochastic processes $c(X_t)$ and $c'(Y_t)$. We cannot use the probability that two particular instances of the motion meet at a certain time point, since $\mathbf{P}(c(X_t) = c'(Y_t)) = 0$ for all values of $t$. The best we can do is approximate two populations coinciding; fixing a small $\varepsilon'$, we consider the `intersection measure'
 %
 \[ B_{(v_1, \dots, v_n), (w_1, \dots, w_m)} = \int_0^\infty \int_0^1 \mathbf{P}\left(c'(Y_t) - \varepsilon' < c(X_t) < c'(Y_t) + \varepsilon'\right)\ dY_t\ dt \]
 %
-Theoretically, this is an approximation. Practically, this method should perform well in practice; really, two people can never be in the {\it exact} same location at a particular time, so our model really does model the correct situation, provided we pick $\varepsilon'$ so that `vicinity' is small enough for two populations to affect one another, and big enough to obtain accurate interaction estimates. To calculate the integral, we perform some method of approximation. Due to the arbitrary nature of the parameterizations, an analytic form is impossible to obtain.
+which sums up the possible instances of intersection. Theoretically, this is an approximation. Practically, this method should perform well in practice; really, two people can never be in the {\it exact} same location at a particular time, so our model really does model the correct situation, provided we pick $\varepsilon'$ so that `vicinity' is small enough for two populations to affect one another, and big enough to obtain accurate interaction estimates. To calculate the integral, we perform some method of approximation. Due to the arbitrary nature of the parameterizations, an analytic form is impossible to obtain.
 
-\section{Extending the Model to Waves of Immigrants}
-
-Using the method above, we can consider waves of immigrants, which begin at different time periods. Using the correlation coefficient determination method above (modified to take into account different time parameterizations).
+Our method above also allows us to extend our model to additional timeframes. We can now consider waves of immigrants, which begin at different time periods. Using the correlation coefficient determination method above (modified to take into account different time parameterizations).
 
 \section{Metrics of Refugee Crisis}
 
