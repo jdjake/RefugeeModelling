@@ -165,11 +165,11 @@ Our second concern is overcrowding. In an overcrowded group, disease, fighting a
 
 One final concern is that refugees do not wish to travel paths which are too long and arduous for them to travel. Therefore, if we have a distance function $d$ on the vertices, giving us the length of a route to travel from one vertex to another, then refugees will travel a distance proportional to the sum of the distances of the edges they travel along. Thus we add another constant $C$ relative to the distance traveled by refugees which causes a route to be dangerous.
 
-We have thus formulated enough constraints and costs to form a quadratic program.  The standard form of the optimization problem is detailed below:
+We have thus formulated enough constraints and costs to form a quadratic program.  In standard form,
 %
 \begin{align*}
     &\text{min} \left( \sum_{(v_1, \dots, v_n)} K_{(v_1, \dots, v_n)} x_{(v_1, \dots, v_n)} + Cn x_{(v_1, \dots, v_n)} + B x_{(v_1, \dots, v_n)}^2 \right)\\
-    &\text{such that, for each source $v$ and sink $w$,}\\
+    &\text{s.t. for each source $v$ and sink $w$,}\\
     &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \sum_{\substack{(v_1, \dots, v_n) \\ v_1 = v}} x_{(v_1, \dots, v_n)} = R_v\\
     &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \sum_{\substack{(v_1, \dots, v_n) \\ v_n = w}} x_{(v_1, \dots, v_n)} \leq C_w
 \end{align*}
@@ -204,7 +204,11 @@ where $\varepsilon$ is a small constant, and $W_t$ is standard brownian motion. 
 %
 \[ D_{c,c'} = \int_0^\infty \int_0^1 \mathbf{P}(c'(Y_t) - \varepsilon' < c(X_t) < c'(Y_t) + \varepsilon')\ dY_t\ dt \]
 %
-Though theoretically an approximation, practically, this method should model situations well in practice. Really, two people can never be in the {\it exact} same location at a particular time, so our model really does model the correct situation, provided we pick $\varepsilon'$ so that `vicinity' is both small enough for two populations to affect one another, and big enough so that the quantity above does not converge to zero. In a particular application of this derivation, we can take two independant motions $X_t$ and $Y_t$ for the same curve $c$, to obtain better density constants for the linear programming formulation.
+Theoretically, this is an approximation. Practically, this method should model situations well in practice. Really, two people can never be in the {\it exact} same location at a particular time, so our model really does model the correct situation, provided we pick $\varepsilon'$ so that `vicinity' is both small enough for two populations to affect one another, and big enough so that the quantity above does not converge to zero. In a particular application of this derivation, we can take two independant motions $X_t$ and $Y_t$ for the same curve $c$, to obtain better density constants for the linear programming formulation.
+
+\section{Extending the Model to Waves of Immigrants}
+
+Using the method above, we can consider waves of immigrants, which begin at different time periods. Using the correlation coefficient determination method above (modified to take into account different time parameterizations).
 
 \section{Metrics of Refugee Crisis}
 
