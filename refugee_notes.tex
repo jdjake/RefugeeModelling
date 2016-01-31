@@ -146,7 +146,8 @@ We begin by forming a directed graph, summarizing the routes that refugees can t
     %
     Where $R_v$ is the number of refugees exiting the node $v$.
 
-    \item (Every Country has a Capacity) For each possible country, $w$, in which a refugee may take asylum, we have
+    \item (Every Country is Bounded by its Capacity) For each possible country $w$ in which a refugee may take asylum, we have
+    
     %
     \[ \sum_{\substack{(v_1, \dots, v_n) \\ v_n = w}} x_{(v_1, \dots, v_n)} \leq C_w \]
     %
@@ -154,6 +155,10 @@ We begin by forming a directed graph, summarizing the routes that refugees can t
 \end{enumerate}
 
 We formulate risk as a quadratic constraint with multiple factors. First, we take the risk of a route into account. Each edge $(v,w)$ in the graph is associated with a certain `risk constant' $K_{(v,w)}$ that represents the probability of death for a single refugee travelling along that edge. Of course, if $n$ refugees travel along this path, then the expected number of deaths is $n K_{(v,w)}$. The risk of death travelling along a certain path $(v_1, \dots, v_n)$ is then compounded. By basic laws of probability, we have
+%
+\[ \mathbf{P}(\text{immigrant dies on}\ (v_1, \dots, v_n)) = \sum_{i = 1}^{n-1} \mathbf{P}(\text{immigrant dies on}\ (v_i, v_{i+1})) \]
+%
+Since the event of dying on a certain interval is obviously independant of dying on a disjoint interval, we have an analogous equation for the constant,
 %
 \[ K_{(v_1, \dots, v_n)} = \sum_{i = 1}^n \left( \prod_{j = 1}^{i-1} \left(1 - K_{(v_j,v_{j+1})} \right) \right) K_{(v_i, v_{i+1})} \]
 %
@@ -167,21 +172,47 @@ We have thus formulated enough constraints and costs to form a quadratic program
 %
 \begin{align*}
     &\text{min} \left( \sum_{(v_1, \dots, v_n)} K_{(v_1, \dots, v_n)} x_{(v_1, \dots, v_n)} + Cn x_{(v_1, \dots, v_n)} + B x_{(v_1, \dots, v_n)}^2 \right)\\
-    &\text{s.t. for each source $v$ and sink $w$,}\\
+    &\text{such that, for each source $v$ and sink $w$,}\\
     &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \sum_{\substack{(v_1, \dots, v_n) \\ v_1 = v}} x_{(v_1, \dots, v_n)} = R_v\\
     &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \sum_{\substack{(v_1, \dots, v_n) \\ v_n = w}} x_{(v_1, \dots, v_n)} \leq C_w
 \end{align*}
 %
 This may be solved via any of your favourite quadratic optimization methods.
 
-\begin{center}
-\includegraphics[scale=0.5]{ImmigrationPoll}
-\end{center}
+\section{Deriving the Path Correlation Coefficient}
+
+Currently, our linear program does not take into account the intersection of paths formed by travelling refugees. Furthermore, it assumes that refugees travel deterministically, not dispersing in response to extraneous events. This obviously does not hold. No two refugees are completely alike, and react differently in response to different events.
+
+The reason why this problem arises when studying the correlation between two different paths arises when two paths intersect. Consider the diagram below, consisting of two curves, with unit speed parameterizations $c$ and $c'$. Suppose that we model the movement of refugees as a single point moving along the line. Then the movement of two groups of refugees coincides when $c(t) = c'(t)$. If the traces of $c$ and $c'$ intersect, but hit the point at different times, then our model would determine that these groups never meet each other. On the other hand, if $c(t) = c(t')$ where $t$ and $t'$ are two time points very far apart, then we would like to consider these two intersections less important than when $t$ and $t'$ are very close. We solve this problem by taking a stochastic movement along these curves.
+
+INSERT IMAGE OF CURVES $c$ AND $c'$ HERE
+
+To accomodate the random motion of immigrating populations along a specific route, we apply the theory of stochastic processes. Begin by making the following assumptions
+%
+TO DO: ADD MORE JUSTIFICATION FOR ASSUMPTIONS
+%
+\begin{enumerate}
+    \item Every immigrant starts the route at the start point.
+    \item The movement of immigrants, as a function of time, is continuous.
+    \item The average position of immigrants is linearly proportional to the time elapsed since immigration.
+    \item Past movement of a certain immigrant cannot predict future movement. That is, the process of immigration is Markovian.
+    \item Relative to the `center of mass' of the population, an immigrants movement is normally distributed, whose standard deviation is linearly proportional to time. This represents a `diffusion' of immigrants over time as they travel to their destination, which converges to the final destination asymptotically.
+\end{enumerate}
+%
+First, we pull back the curve $c$ to its domain $[0,A]$, and extending the definition of $c$ to $[0,\infty)$, by definining $c(A + t) = c(A)$ for $t \geq 0$. We shall place a stochastic process on the interval. With the assumptions above, since $c$ has unit velocity at all time points, we can describe the process $X_t$ which models the movement of immigrants via the stochastic equation
+%
+\[ X_t = \varepsilon W_t + t \]
+%
+where $\varepsilon$ is a small constant, and $W_t$ is standard brownian motion. We perform this task for each path, represented by a curve $c$, we construct a process following the equation above. If $X_t$ is such an equation, then $c(X_t)$ gives us a stochastic process on the path in the graph. We wish to measure, in some capacity, the `population correlation' between the stochastic processes $c(X_t)$ and $c'(Y_t)$. We cannot use the probability that two particular instances of the motion meet at a certain time point, since, because continuous processes are nasty -- $\mathbf{P}(c(X_t) = c'(Y_t)) = 0$ for all values. The best we can do is to approximate two populations coinciding; fixing a small $\varepsilon'$, and consider the quantity
+%
+\[ D_{c,c'} = \int_0^\infty \int_0^1 \mathbf{P}(c'(Y_t) - \varepsilon' < c(X_t) < c'(Y_t) + \varepsilon')\ dY_t\ dt \]
+%
+Though theoretically an approximation, practically, this method should model situations well in practice. Really, two people can never be in the {\it exact} same location at a particular time, so our model really does model the correct situation, provided we pick $\varepsilon'$ so that `vicinity' is both small enough for two populations to affect one another, and big enough so that the quantity above does not converge to zero. In a particular application of this derivation, we can take two independant motions $X_t$ and $Y_t$ for the same curve $c$, to obtain better density constants for the linear programming formulation.
 
 \section{Metrics of Refugee Crisis}
 
-\section{Possible Models to Use}
-
-Stochastic Differential equations are used in economics to control the evolution of the stock market. We may apply this theory to model how to control opinion dynamics. A soft introduction to the topic may be found in \footnote{http://www.aetheling.com/docs/SDE.pdf}
+\begin{center}
+\includegraphics[scale=0.5]{ImmigrationPoll}
+\end{center}
 
 \end{document}
