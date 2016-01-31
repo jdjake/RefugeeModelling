@@ -4,9 +4,10 @@
 
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage{cite}
 
 \title{Develop a Better Understanding of the Factors Involved With Facilitating the Movement of Refugees From Their Countries of Origin Into Safe Haven Countries}
-\author{\ \ }
+\author{Nobody in Particular}
 
 \begin{document}
 
@@ -129,85 +130,82 @@ Things to research for tomorrow:
 $http://www.pewresearch.org/fact-tank/2015/04/24/refugees-stream-into-europe-where-they-are-not-welcomed-with-open-arms/ft_15-04-22_eu-immigration/$
 
 
-\section{Linear Programming}
+\section{Optimization of Refugee Movement}
 
-Our goal is to identify the optimal travel routes for refugees emmigrating for asylum. According to data from the UNCHCR Global Trends 2014, ongoing conflicts in Syria and Afghanistan and other countries in the Middle East and Africa are the largest source of refugees\footnote{$http://ec.europa.eu/echo/files/aid/countries/factsheets/thematic/refugees_en.pdf$}. Many of these refugees flee to neighbouring countries in the Middle East\footnote{$http://ec.europa.eu/echo/files/aid/countries/factsheets/thematic/refugees_en.pdf$}. We are interested in modeling refugee travel from refugee camps, or source nodes, in the Middle East to European countries where the refugees may be integrated into society. It is not economically feasible to move large numbers of refugees across the Atlantic Ocean to North America due to the large distance and travel costs involved, so refugee movement to countries such as Canada and the United States will not be addressed in this model. 
+Our goal is to identify optimal travel routes for refugees seeking asylum. Ongoing conflicts in Syria, Afghanistan, the Middle East, and Africa are critical contributors\cite{refugeefactsheet}. Data shows most of these refugees flee to neighboring Middle Eastern countries, and on to Europe\cite{refugeefactsheet}. Our investigation focuses on these groups, and their transportation to the most popular states. To guide transportation, we optimize a refugee transportation model, from the conflicts discussed to the Middle East and Europe. Economically, it is unfeasible to transport large numbers of refugees by plane or boat, so we will not address refugee movement in this model.
 
-We must optimize the travel routes of refugees for safety and efficiency, under realistic constraints that prevent a utopian immigration process. This is most naturally formed as a linear program. For each route that refugees could travel, we allocate a certain number of refugees. We wish to prevent overcrowding routes and to avoid sending refugees down dangerous routes because an optimal travel route is safe. Safety concerns will be incorporated into our model with a risk parameter. 
+Obvious by our choice of words, we consider an optimization problem. Under realistic constraints, which prevent perfect migration, a best achievable situation must be achieved. Most optimization problem are computationally unfeasible. Therefore, we restrict our model to linear and quadratic programming methods. Each route will be associated with an allocation of refugees. The UNs primary goal in this matter is to safeguard the well-being of refugees during the journey \cite{UNStatement}. Such safety concerns will be incorporated into our model as a risk parameter, which we attempt to minimize. Factors such as overcrowding, route danger, and route length will contribute most to this risk. Sometimes, it may be worth a risky journey to end up in a country which is least risky to live in.
 
-Given a country's refugee quota (See Table 1 INSERT TABLE HERE PLEASE) we define that value as the capacity ($C_w$) of any given destination country $w$, or the maximum number of refugees that may settle in that country. The capacity incorporates the fact that there are limited resources available for refugee support in Europe. However, there may be a greater demand for those resources than can be accomodated. More refugees may enter the system than can be accomodated by every destination country even at their maximum capacity. This information can be used to decide which policy decisions should be made in order to organize refugee movement.
+Statistics provided by REPUTABLE SOURCE enable us to approximate the refugee capacity of each country we are considering. By additional analysis of ANOTHER REPUTABLE SOURCE, we can estimate the projected refugees produced in 2016. Details of such statistics used can be found in table INSERT TABLE HERE PLEASE. Our model assumes the use of such statistics, provided as a parameter to the system. We shall denote the capacity of a country $w$ as $C_w$, and the refugee productions of a country $v$ as $R_v$. The model detailed assumes that $\sum R_v \leq \sum C_w$, to obtain a feasible solution to the optimization procedure. Of course, as we can see from the European reaction to the refugee crisis, there may be a much greater demand of resources than can be accomodated. Regardless of a country's refusal to admit more refugees, desparate refugees will find a way to flee their home country, though perhaps to a subacceptable destination. To model this, we place `substandard' camps with capacities large enough to contain what other countries are unable to maintain.
 
-We begin by forming a directed graph, summarizing the routes that refugees can take. We consider ach simple path $(v_1, \dots, v_n)$ in the graph because refugees are unlikely to take cyclic routes. For each simple path, we allocate a specific number $x_{(v_1, \dots, v_n)} \in \mathbf{R}$, that represents the number of refugees allocated to that route. ADD ILLUSTRATIVE GRAPH HERE The constraints previously described can be summarized by the following equations
+We begin by forming a directed graph, whose nodes are countries, and whose edges are possible paths for refugees to take to obtain asylum. We consider any particular refugee's journey to be a simple path in the graph, because refugees are unlikely to take cyclic routes. More importantly to us, the UN should not guide refugees to take such non-optimal routes. For each simple path $(v_1, \dots, v_n)$, we allocate a number $x_{(v_1, \dots, v_n)} \in \mathbf{R}$, which represents the approximate number of refugees travelling along that path. The constraints are summarized by the equations below.
 
 \begin{enumerate}
-    \item (No Refugee Left Behind) For every source node $v$, we have
+    \item (No Refugee Left Behind) For every country $v$ producing refugees,
     %
     \[ \sum_{\substack{(v_1, \dots, v_n) \\ v_1 = v}} x_{(v_1, \dots, v_n)} = R_v \]
     %
-    Where $R_v$ is the number of refugees exiting the node $v$.
+    Where $R_v$ is the number of refugees exiting the country $v$.
 
-    \item (Every Country is Bounded by its Capacity) For each possible country $w$ in which a refugee may take asylum, we have
-    
+    \item (Bounded Capacity) For each asylum country $w$,
     %
     \[ \sum_{\substack{(v_1, \dots, v_n) \\ v_n = w}} x_{(v_1, \dots, v_n)} \leq C_w \]
     %
-    Where $C_w$ is the capacity of the node $w$.
+    Where $C_w$ is the capacity of the country $w$.
 \end{enumerate}
 
-We formulate risk as a quadratic constraint with multiple factors. First, we take the risk of a route into account. Each edge $(v,w)$ in the graph is associated with a certain `risk constant' $K_{(v,w)}$ that represents the probability of death for a single refugee travelling along that edge. Of course, if $n$ refugees travel along this path, then the expected number of deaths is $n K_{(v,w)}$. The risk of death travelling along a certain path $(v_1, \dots, v_n)$ is then compounded. By basic laws of probability, we have
-%
-\[ \mathbf{P}(\text{immigrant dies on}\ (v_1, \dots, v_n)) = \sum_{i = 1}^{n-1} \mathbf{P}(\text{immigrant dies on}\ (v_i, v_{i+1})) \]
-%
-Since the event of dying on a certain interval is obviously independant of dying on a disjoint interval, we have an analogous equation for the constant,
-%
-\[ K_{(v_1, \dots, v_n)} = \sum_{i = 1}^n \left( \prod_{j = 1}^{i-1} \left(1 - K_{(v_j,v_{j+1})} \right) \right) K_{(v_i, v_{i+1})} \]
-%
-This expression of risk forms our first linear constraint on the system.
+We formulate risk as a quadratic functional, with certain quantified factors described below.
 
-Our second concern is overcrowding. In an overcrowded group factors such as disease and crime are likely to cause harm to travelling refugees, so the density of travellers must be considered. This is a rather simple constant to form. The number of interations within a population of size $n$ is quadratically related to population density. It follows that the risk factors are quadratically related to population density. We assume that there exists a constant $B$ such that the relationship of death rates for $x$ people on a given route is approximated by $Bx^2$. 
+\begin{enumerate}
+    \item {\it The risk of a route}. Each edge $(v,w)$ in the graph is associated with a certain `risk constant' $K_{(v,w)}$ that represents the probability of death for a single refugee travelling along that edge. If $n$ refugees travel along this path, then the expected number of deaths will be $n K_{(v,w)}$. The risk of death travelling along a certain path $(v_1, \dots, v_n)$ is then compounded. By basic laws of probability, we have
+    %
+    \[ \mathbf{P}(\text{immigrant dies on}\ (v_1, \dots, v_n)) = \sum_{i = 1}^{n-1} \mathbf{P}(\text{immigrant dies on}\ (v_i, v_{i+1})) \]
+    %
+    We obtains an analogous equation for the risk constant, where the chance an immigrant dies on an edge is the product of the probability that the immigrant does not die on all previous edges, compounded with the probability that the immigrant dies on the final edge.
+    %
+    \[ K_{(v_1, \dots, v_n)} = \sum_{i = 1}^n \left( \prod_{j = 1}^{i-1} \left(1 - K_{(v_j,v_{j+1})} \right) \right) K_{(v_i, v_{i+1})} \]
 
-Finally, the idea that shorter paths are more optimal needs to be incorporated in to the model. If we have a distance function $d$ on the vertices that provides the length of a route to travel from one vertex to another, then refugees will travel a distance proportional to the sum of the distances of the edges they travel along. Thus we add another constant $C$ relative to the distance traveled by refugees because longer routes are more dangerous.
+    \item {\it Route overcrowding}. In an overcrowded group of refugees, disease, violence, and crime are likely to cause harm, so we must manage traveller density in order to reduce risk. We assume the number of interactions within a population is quadratically proportional to population density. It follows that the risk factors of disease, violence and crime, all due to population interaction, are also quadratically propertional to density. We assume that there exists a constant $B_{(v_1, \dots, v_n)}$ for each route $(v_1, \dots, v_n)$ such that the health compromising rates for a group of $n$ people are proportions to $B_{(v_1, \dots, v_n)} n^2$. We shall also have to consider `correlation rates', since two paths $(v_1, \dots, v_n)$ may coincide in such a way to cause congestion, leading to a rate of the form $B_{(v_1, \dots, v_n), (w_1, \dots, w_m)} n m$, where $m$ is the group travelling along a path $(w_1, \dots, w_m)$. Of course, for routes that never coincide, this value may be zero. For notational homogeneity, we shall also denote $B_{(v_1, \dots, v_n)}$ by $B_{(v_1, \dots, v_n), (v_1, \dots, v_n)}$. Derivation of these constants will be obtained in the next section.
+\end{enumerate}
 
-We have thus formulated enough constraints and costs to form a quadratic program.  In standard form,
+Our risk functional and constraints form a quadratic program. To summarize, our quadratic program is described in the following form.
 %
 \begin{align*}
-    &\text{min} \left( \sum_{(v_1, \dots, v_n)} K_{(v_1, \dots, v_n)} x_{(v_1, \dots, v_n)} + Cn x_{(v_1, \dots, v_n)} + B x_{(v_1, \dots, v_n)}^2 \right)\\
+    &\text{min} \sum_{(v_1, \dots, v_n)} K_{(v_1, \dots, v_n)} x_{(v_1, \dots, v_n)}\\
+    & \ + \sum_{\substack{(v_1, \dots, v_n)\\(w_1, \dots, w_m)}} B_{(v_1, \dots, v_n) (w_1, \dots, w_m)} x_{(v_1, \dots, v_n)} x_{(w_1, \dots, w_m)}\\
     &\text{s.t. for each source $v$ and sink $w$,}\\
-    &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \sum_{\substack{(v_1, \dots, v_n) \\ v_1 = v}} x_{(v_1, \dots, v_n)} = R_v\\
-    &\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \sum_{\substack{(v_1, \dots, v_n) \\ v_n = w}} x_{(v_1, \dots, v_n)} \leq C_w
+    &\ \ \ \ \ \sum_{\substack{(v_1, \dots, v_n) \\ v_1 = v}} x_{(v_1, \dots, v_n)} = R_v\\
+    &\ \ \ \ \ \sum_{\substack{(v_1, \dots, v_n) \\ v_n = w}} x_{(v_1, \dots, v_n)} \leq C_w
 \end{align*}
 %
-This may be solved via any of your favourite quadratic optimization methods.
+Any of your favourite quadratic optimization methods will find an optimum solutions to this problem.
 
-\section{Deriving the Path Correlation Coefficient}
+\section{Deriving Path Correlation Coefficients}
 
-Currently, our linear program does not take into account the intersection of paths formed by travelling refugees. Furthermore, it assumes that refugees travel deterministically, not dispersing in response to extraneous events. This obviously does not hold. No two refugees are completely alike, and react differently in response to different events.
+In its current form, our linear program does not take into account the intersection of paths formed by travelling refugees. It also assumes that groups of refugees travel deterministically. This obviously does not hold in any practical sense -- No two refugees are completely alike, and react differently in response to different events.
 
-The reason why this problem arises when studying the correlation between two different paths arises when two paths intersect. Consider the diagram below, consisting of two curves, with unit speed parameterizations $c$ and $c'$. Suppose that we model the movement of refugees as a single point moving along the line. Then the movement of two groups of refugees coincides when $c(t) = c'(t)$. If the traces of $c$ and $c'$ intersect, but hit the point at different times, then our model would determine that these groups never meet each other. On the other hand, if $c(t) = c(t')$ where $t$ and $t'$ are two time points very far apart, then we would like to consider these two intersections less important than when $t$ and $t'$ are very close. We solve this problem by taking a stochastic movement along these curves.
+We could discard this assumption as a quirk of the model, besides the fact that it becomes a problem when trying to find the path correlation coefficients $B_{(v_1, \dots, v_n) (w_1, \dots, w_m)}$. Consider the diagram below, consisting of two curves, together with parameterizations $c$ and $c'$ with unit velocity. These curve represent one of the possible paths that refugees can take. When we model the movement of refugees as a single point on the line, then the movement of two groups of refugees coincides when $c(t) = c'(t)$. If the traces of $c$ and $c'$ intersect, but hit all points in the intersection at different times, then our model would determine that these groups never meet each other. On the other hand, we cannot just take the traces as evidence for congestion, for we would like to increase the importance of an intersection $c(t) = c(t')$ when $t$ and $t'$ are very close, and decrease the importance when the time points are far apart. After a long time, most refugees will have moved away from this point, so congestion is near negligable. We solve this problem by taking a stochastic movement along these curves, determining the expected intersection probability when two groups encounter one another.
 
 INSERT IMAGE OF CURVES $c$ AND $c'$ HERE
 
-To accomodate the random motion of immigrating populations along a specific route, we apply the theory of stochastic processes. Begin by making the following assumptions
-%
-TO DO: ADD MORE JUSTIFICATION FOR ASSUMPTIONS
+To accomodate the random motion of population migration, we apply the theory of stochastic processes. Begin by making the following assumptions
 %
 \begin{enumerate}
-    \item Every immigrant starts the route at the start point.
-    \item The movement of immigrants, as a function of time, is continuous.
-    \item The average position of immigrants is linearly proportional to the time elapsed since immigration.
-    \item Past movement of a certain immigrant cannot predict future movement. That is, the process of immigration is Markovian.
-    \item Relative to the `center of mass' of the population, an immigrants movement is normally distributed, whose standard deviation is linearly proportional to time. This represents a `diffusion' of immigrants over time as they travel to their destination, which converges to the final destination asymptotically.
+    \item {\it Every immigrant starts the route at the start point.} Technically, immigrants could leave from various parts of a certain country, or join a group of refugees after they have already begun travelling.
+    \item {\it The movement of immigrants, as a function of time, is continuous}. Physically, this assumption should always be satisfied.
+    \item {\it The process of immigration movement is Markovian.} Past movement of a certain immigrant cannot predict future movement of that immigrant, aside from where the immigrant is at a certain timepoint. This assumption is to obtain a feasible solution. Though for a specific immigrant this assumption will not be satisfied, when we take statistical averages of immigration this assumption should at least be a good approximation.
+    \item {\it Immigrant travel spreads according to a normal distribution}. This represents a `diffusion' of immigrants over time as they travel to their destination, which converges to the final destination asymptotically. By the law of large numbers, the distribution of immigrants should be sufficiently approximated by a normal distribution, so this assumption is not too sensitive to change.
 \end{enumerate}
 %
-First, we pull back the curve $c$ to its domain $[0,A]$, and extending the definition of $c$ to $[0,\infty)$, by definining $c(A + t) = c(A)$ for $t \geq 0$. We shall place a stochastic process on the interval. With the assumptions above, since $c$ has unit velocity at all time points, we can describe the process $X_t$ which models the movement of immigrants via the stochastic equation
+Now we calculate the coefficient of immigration. First, we pull back the curve $c$ to its domain $[0,A]$, and extending the definition of $c$ to $\mathbf{R}$, by definining $c(A + t) = c(A)$, $c(-t) = 0$ for $t \geq 0$. We shall place a stochastic process on the interval. The assumptions above uniquely determine the structure of the process. Since $c$ has unit velocity at all time points, we can describe the process $X_t$ which models the movement of immigrants via the stochastic equation
 %
 \[ X_t = \varepsilon W_t + t \]
 %
-where $\varepsilon$ is a small constant, and $W_t$ is standard brownian motion. We perform this task for each path, represented by a curve $c$, we construct a process following the equation above. If $X_t$ is such an equation, then $c(X_t)$ gives us a stochastic process on the path in the graph. We wish to measure, in some capacity, the `population correlation' between the stochastic processes $c(X_t)$ and $c'(Y_t)$. We cannot use the probability that two particular instances of the motion meet at a certain time point, since, because continuous processes are nasty -- $\mathbf{P}(c(X_t) = c'(Y_t)) = 0$ for all values. The best we can do is to approximate two populations coinciding; fixing a small $\varepsilon'$, and consider the quantity
+where $\varepsilon$ is a small constant, and $W_t$ is standard brownian motion. We construct an independant task for each path $(v_1, \dots, v_n)$, represented by a curve $c$. If $X_t$ is such an equation, then $c(X_t)$ gives us a stochastic process on the path in the graph. We wish to measure, in some capacity, the `population correlation' between the stochastic processes $c(X_t)$ and $c'(Y_t)$. We cannot use the probability that two particular instances of the motion meet at a certain time point, since $\mathbf{P}(c(X_t) = c'(Y_t)) = 0$ for all values of $t$. The best we can do is approximate two populations coinciding; fixing a small $\varepsilon'$, we consider the `intersection quantity'
 %
-\[ D_{c,c'} = \int_0^\infty \int_0^1 \mathbf{P}(c'(Y_t) - \varepsilon' < c(X_t) < c'(Y_t) + \varepsilon')\ dY_t\ dt \]
+\[ B_{(v_1, \dots, v_n), (w_1, \dots, w_m)} = \int_0^\infty \int_0^1 \mathbf{P}\left(c'(Y_t) - \varepsilon' < c(X_t) < c'(Y_t) + \varepsilon'\right)\ dY_t\ dt \]
 %
-Theoretically, this is an approximation. Practically, this method should model situations well in practice. Really, two people can never be in the {\it exact} same location at a particular time, so our model really does model the correct situation, provided we pick $\varepsilon'$ so that `vicinity' is both small enough for two populations to affect one another, and big enough so that the quantity above does not converge to zero. In a particular application of this derivation, we can take two independant motions $X_t$ and $Y_t$ for the same curve $c$, to obtain better density constants for the linear programming formulation.
+Theoretically, this is an approximation. Practically, this method should perform well in practice; really, two people can never be in the {\it exact} same location at a particular time, so our model really does model the correct situation, provided we pick $\varepsilon'$ so that `vicinity' is small enough for two populations to affect one another, and big enough to obtain accurate interaction estimates. To calculate the integral, we perform some method of approximation. Due to the arbitrary nature of the parameterizations, an analytic form is impossible to obtain.
 
 \section{Extending the Model to Waves of Immigrants}
 
@@ -218,5 +216,8 @@ Using the method above, we can consider waves of immigrants, which begin at diff
 \begin{center}
 \includegraphics[scale=0.5]{ImmigrationPoll}
 \end{center}
+
+\bibliographystyle{plain}
+\bibliography{refugee_citations}
 
 \end{document}
