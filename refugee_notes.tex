@@ -13,26 +13,44 @@
 
 \maketitle
 
-Humanitarian organizations that aim to settle refugees in Europe are currently facing new challenges because refugees settling in Europe are coming from outside Europe in larger numbers than ever before\footnote{http://www.bbc.com/news/world-35091772}. One of these organizations, the office of the United Nations High Commissioner for Refugees (UNHCR) was initially formed in 1950 with the intent to help Europeans displaced by World War II\footnote{http://www.unhcr.org/pages/49c3646cbc.html}. Since its inception the UNHCR has provided aid to refugees, internally dispaced people, stateless people, and asylum seekers from emergencies originating within Europe and, increasingly, outside of Europe.\footnote{http://www.unhcr.org/pages/49c3646cbc.html}.
+Humanitarian organizations that aim to settle refugees in Europe are currently facing new challenges because refugees are coming from outside Europe in larger numbers than ever before\footnote{http://www.bbc.com/news/world-35091772}. One of these organizations, the office of the United Nations High Commissioner for Refugees (UNHCR) was initially formed in 1950 with the intent to help Europeans displaced by World War II\footnote{http://www.unhcr.org/pages/49c3646cbc.html}. Since its inception the UNHCR has provided aid to refugees, internally dispaced people, stateless people, and asylum seekers from emergencies originating within Europe and, increasingly, outside of Europe.\footnote{http://www.unhcr.org/pages/49c3646cbc.html}.
 
-According to data from the UNCHCR Global Trends 2014, ongoing conflicts in Syria and Afghanistan are the largest source of refugees\footnote{$http://ec.europa.eu/echo/files/aid/countries/factsheets/thematic/refugees_en.pdf$}. 
+Conflict and poor governance are seen as the main reasons that people become refugees\footnote{http://www.bbc.com/news/world-35091772}. The 1951 refugee convention defines a refugee as ``owing to a well-founded fear of being persecuted for reasons of race, religion, nationality, membership of a particular social group or political opinion, is outside the country of his nationality, and is unable to, or owing to such fear, is unwilling to avail himself of the protection of that country''\footnote{http://www.unhcr.org/pages/49da0e466.html}, rather than a migrant, who is someone moving from one country to another without refugee status. According to data from the UNCHCR Global Trends 2014, ongoing conflicts in Syria and Afghanistan are the largest source of refugees\footnote{$http://ec.europa.eu/echo/files/aid/countries/factsheets/thematic/refugees_en.pdf$}. When considering how to solve the refugee crisis, it is important to pair dealing with the root causes with safe and efficient relocation of refugees.
+
+Immigrants travel multiple routes -- beginning at the middle east, and travelling through the West, East, and Central Mediterranean, the West Balkans, the Eastern Borders, and from Albania to Greece.
+CITE TRAVEL MAP
+
+\begin{center}
+\includegraphics[scale=0.5]{travelmap}
+\end{center}
+
+\begin{enumerate}
+    \item The majority of refugees resettle in the middle eastern countries of Jordan, Lebanon, and Turkey.
+    \item 1,015,078 refugees arrived by sea in 2015.
+    \item 942,000 refugees sought asylum in the European Union in 2015\footnote{Eurostat}.
+    \item 315,000 have sought asylum in Germany, yet more than 1 million have been counted in Germany's EASY system\footnote{http://www.bbc.com/news/world-europe-34131911}.
+    \item 174,055 applied in Hungary.
+\end{enumerate}
+
+The political climate surrounding refugee aid in Europe is highly variable and subject to rapid change. Poorly managed camps in Hungary have damaged the reputation of migrants, leading to a surge in the popularity of the radical nationalist Jobbik party\footnote{http://www.bbc.com/news/world-europe-34280460}. The way countries will handle immigration crises cannot be deterministically modeled, so this is considered to be an exogenous factor. In other countries, such as Germany, strong moral foundations protect the influx of immigration\footnote{http://www.bbc.com/news/world-europe-33700624}, with little (and strongly opposed) backlash at the new immigration policies. In addition, unpredicted disasters such as the Paris attacks may threaten refugee relations with their host countries. In November 2015, the incoming Polish Minister for European Affairs said ``we will accept refugees only if we have security guarantees'' \footnote{http://www.bbc.com/news/world-europe-34826438}. The Paris attacks deepened the level of mistrust towards refugees across Europe, since it was believed that the terrorists snuck into the country with refugees. Regardless of the truth of these facts (the only known attackers are French and Belgian residents), the coinciding events were treated as such, and has lead to border problems in the country. Although the only known terrorists were French and Belgian residents, if there is increased mistrust towards refugees that may lead to changes in publically acceptable refugee policy.
+
+We have been tasked with building a model that will help develop a better understanding of the factors involved with facilitating the movement of refugees from their countries of origin into safe haven countries. In doing this, we are attempting to determine the safest and most efficient routes that refugees should take and how many refugees should travel along those routes at a time. The numbers of refugees that should take any given route will relate to the capacity of possible destinations within Europe and the number of refugees within the system. 
+
+Any proposal regarding large volumes of refugee movement should be considered a short term proposal. The resources available for refugee aid are finite, and the impetus for humanitarian aid may decrease over time, causing assumptions that are used to determine optimal travel routes to become inaccurate over longer time periods. The only way to permanantly ease the migrant situation in Europe is to end the conflicts that make people flee their countries in the first place. Therefore, we should only project our models into short time periods in the future.
+
 
 This problem breaks down into multiple problems.
 
 \begin{enumerate}
     \item {\bf What are the factors involved with moving refugees?}
 
-    What attributes enable or inhibit the safe and efficient movement of refugees. As an example, the individuals (plus resources the individuals have), routes, types of transportation, country capacity (plus entry points). The UN asks us to prioritize the health and safety of refugees.
+    The UN asks us to prioritize the health and safety of refugees. What attributes enable or inhibit the safe and efficient movement of refugees? We consider the total numbers of refugees in the system and at each node, entry points for refugees, possible routes, popularity and capacity of those routes, length of routes, mode of transportation along the route, infrastructure for accommodation along routes, and capacity of European countries to recieve refugees to be 
 
-    Total numbers of refugees in the system and at each node, entry points for refugees, possible routes, popularity and capacity of those routes, length of routes, infrastructure for accommodation along routes, and capacity for receipt of refugees.
+    The total number of refugees entering the system and at each node, the entry points for refugees and capacity of European countries to recieve countries are important variables within the system. The entry points for refugees, possible routes, the popularity and capacity of those routes, the length of routes, mode of transportation and availabilty of infrastructure for accomodation along those routes are parameters to be considere in the system.
 
-    Safety will be optimized by minimizing the risk that any individual may not complete a route. We define a measure of risk that incorporates information about liklihood of illness, death (i.e. drowning on water routes), and other dangers of travel that may be exacerbated for routes with high throughput for a given route. 
+    Safety will be optimized by minimizing the risk that any individual may not complete a route. We define a measure of risk that incorporates information about liklihood of illness, death (i.e. drowning on water routes), and other dangers of travel that may be exacerbated for routes with high throughput for a given route. We assume that low densities have low risk and that high densities have high risk. In the absence of data describing this relationship further, for simplicity we assume that population density on a route has a positive linear relationship to risk. If more data becomes available, then a more realistic density-risk function may be substituted into the model.
 
-    We choose a monotonically increasing density function that models the risk of not completing the route. Higher population densities along a route result in a higher risk than lower densities. We assume that low densities have low risk and that high densities have high risk, so density may have an exponential, sigmoidal or linear relationship to risk. If we assume that once a threshold density is reached, risk increases at a slower rate then, a sigmoidal curve may approximate the relationship between density and risk more accurately than an exponential or linear relationshp. However, since we have decided to use a linear programming model  If data becomes available, then a more realistic density-risk function may be substituted into the model.
-
-    Calculation of risk must also relate the length of the route to the density, perhaps with a linear relationship. 
-
-    Efficiency - With high numbers of migrants, where do bottlenecks occur? Why do bottlenecks occur, and  What measure may be used to evaluate the efficiency of a system? Penalty for slower travel and for long waits in camps before reaching the end destination and exiting the system. Policy that prevents a high number of individuals existing without citizenship to a country should be preferred.
+    To assess the efficiency of a route, one may consider a case with high numbers of migrants to determine where bottlenecks occur and the factors that are slowing down flow at that point on the graph. Efficiency can be incorporated into the selection of an optimal route by favouring shorter routes or including a penalty for slower travel and for long waits in camps before reaching the end destination and exiting the system. Policy that prevents a high number of individuals existing for long periods of time without settling in a country should be preferred.
 
     Assumptions: All migrants who make it to their destination travel at the average rate. Due to our choice of a linear programming model, all relationships are linear. 
 
@@ -68,6 +86,7 @@ This problem breaks down into multiple problems.
 
     Write a report to the UN, proposing a set of policies to enact which will support the conditions for optimal migration (optimal to the UN's views).
 \end{enumerate}
+<<<<<<< HEAD
 
 The 1951 refugee convention defines a refugee to be ``owing to a well-founded fear of being persecuted for reasons of race, religion, nationality, membership of a particular social group or political opinion, is outside the country of his nationality, and is unable to, or owing to such fear, is unwilling to avail himself of the protection of that country''\footnote{http://www.unhcr.org/pages/49da0e466.html}, rather than a migrant, who is just someone moving from one country to another.
 
@@ -130,7 +149,7 @@ Things to research for tomorrow:
 $http://www.pewresearch.org/fact-tank/2015/04/24/refugees-stream-into-europe-where-they-are-not-welcomed-with-open-arms/ft_15-04-22_eu-immigration/$
 
 
-\section{Optimization of Refugee Movement}
+\section{Refugee Movement Optimization}
 
 Our goal is to identify optimal travel routes for refugees seeking asylum. Ongoing conflicts in Syria, Afghanistan, the Middle East, and Africa are critical contributors\cite{refugeefactsheet}. Data shows most of these refugees flee to neighboring Middle Eastern countries, and on to Europe\cite{refugeefactsheet}. Our investigation focuses on these groups, and their transportation to the most popular states. To guide transportation, we optimize a refugee transportation model, from the conflicts discussed to the Middle East and Europe. Economically, it is unfeasible to transport large numbers of refugees by plane or boat, so we will not address refugee movement in this model.
 
