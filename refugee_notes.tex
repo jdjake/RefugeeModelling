@@ -33,7 +33,7 @@
 
 \pagenumbering{arabic}
 
-Humanitarian organizations that aim to settle refugees in Europe are currently facing new challenges because refugees are coming from outside Europe in larger numbers than ever before \cite{simpson}. One of these organizations, the office of the United Nations High Commissioner for Refugees (UNHCR) was initially formed in 1950 with the intent to help Europeans displaced by World War II\footnote{http://www.unhcr.org/pages/49c3646cbc.html}. Since its inception the UNHCR has provided aid to refugees, internally dispaced people, stateless people, and asylum seekers from emergencies originating within Europe and, increasingly, outside of Europe.\footnote{http://www.unhcr.org/pages/49c3646cbc.html}.
+Humanitarian organizations that aim to settle refugees in Europe are currently facing new challenges because refugees are coming from outside Europe in larger numbers than ever before \cite{simpson}. One of these organizations, the office of the United Nations High Commissioner for Refugees (UNHCR) was initially formed in 1950 with the intent to help Europeans displaced by World War II \cite{historyUNHCR}. Since its inception the UNHCR has provided aid to refugees, internally dispaced people, stateless people, and asylum seekers from emergencies originating within Europe and, increasingly, outside of Europe \cite{historyUNHCR}.
 
 Conflict and poor governance are seen as the main reasons that people become refugees \cite{simpson}. The 1951 refugee convention defines a refugee as ``owing to a well-founded fear of being persecuted for reasons of race, religion, nationality, membership of a particular social group or political opinion, is outside the country of his nationality, and is unable to, or owing to such fear, is unwilling to avail himself of the protection of that country'' \cite{1951convention}, rather than a migrant, who is someone moving from one country to another without refugee status. According to data from the UNCHCR Global Trends 2014, ongoing conflicts in Syria and Afghanistan are the largest source of refugees \cite{refugeefactsheet}. When considering how to solve the refugee crisis, it is important to pair dealing with the root causes with safe and efficient relocation of refugees.
 
@@ -45,12 +45,11 @@ CITE TRAVEL MAP
 \cite{BBCgraphics}
 \end{center}
 
-The political climate surrounding refugee aid in Europe is highly variable and subject to rapid change. Poorly managed camps in Hungary have damaged the reputation of migrants, leading to a surge in the popularity of the radical nationalist Jobbik party\footnote{http://www.bbc.com/news/world-europe-34280460}. The way countries will handle immigration crises cannot be deterministically modeled, so this is considered to be an exogenous factor. In other countries, such as Germany, strong moral foundations protect the influx of immigration\footnote{http://www.bbc.com/news/world-europe-33700624}, with little (and strongly opposed) backlash at the new immigration policies. In addition, unpredicted disasters such as the Paris attacks may threaten refugee relations with their host countries. In November 2015, the incoming Polish Minister for European Affairs said ``we will accept refugees only if we have security guarantees'' \footnote{http://www.bbc.com/news/world-europe-34826438}. The Paris attacks deepened the level of mistrust towards refugees across Europe, since it was believed that the terrorists snuck into the country with refugees. Regardless of the truth of these facts (the only known attackers are French and Belgian residents), the coinciding events were treated as such, and has lead to border problems in the country. Although the only known terrorists were French and Belgian residents, if there is increased mistrust towards refugees that may lead to changes in publically acceptable refugee policy.
+The political climate surrounding refugee aid in Europe is highly variable and subject to rapid change. Poorly managed camps in Hungary have damaged the reputation of migrants, leading to a surge in the popularity of the radical nationalist Jobbik party \cite{thorpe}. The way countries will handle immigration crises cannot be deterministically modeled, so this is considered to be an exogenous factor. In other countries, such as Germany, strong moral foundations protect the influx of immigration, with little (and strongly opposed) backlash at the new immigration policies \cite{hill}. In addition, unpredicted disasters such as the Paris attacks may threaten refugee relations with their host countries. In November 2015, the incoming Polish Minister for European Affairs said ``we will accept refugees only if we have security guarantees'' \cite{hewitt}. The Paris attacks deepened the level of mistrust towards refugees across Europe, since it was believed that the terrorists snuck into the country with refugees. Regardless of the truth of these facts (the only known attackers are French and Belgian residents), the coinciding events were treated as such, and has lead to border problems in the country. Although the only known terrorists were French and Belgian residents, if there is increased mistrust towards refugees that may lead to changes in publically acceptable refugee policy.
 
 We have been tasked with building a model that will help develop a better understanding of the factors involved with facilitating the movement of refugees from their countries of origin into safe haven countries. In doing this, we are attempting to determine the safest and most efficient routes that refugees should take and how many refugees should travel along those routes at a time. The numbers of refugees that should take any given route will relate to the capacity of possible destinations within Europe and the number of refugees within the system. 
 
 Any proposal regarding large volumes of refugee movement should be considered a short term proposal. The resources available for refugee aid are finite, and the impetus for humanitarian aid may decrease over time, causing assumptions that are used to determine optimal travel routes to become inaccurate over longer time periods. The only way to permanantly ease the migrant situation in Europe is to end the conflicts that make people flee their countries in the first place. Therefore, we should only project our models into short time periods in the future.
-
 
 This problem breaks down into multiple problems.
 
@@ -76,7 +75,7 @@ This problem breaks down into multiple problems.
     Graph with connected nodes. Known number of people at a number of entry points. Need to optimize distribution.
 
     Modelling methods considered:
-    Stochastic Differential Equations are used in the stock market because individual factors cannot be influenced. This may be a way to realistically model the randomness of individual refugee movement. However, this type of model is difficult to optimize, which may make it difficult to meet our objective to optimize refugee movement. The use of stochastic programming may allow for optimization of the model. Stochastic effects are generally more important when you are dealing with small population sizes\footnote{Vries {\em et al.} 2006}. Since stochastic effects will likely have little impact on the overall movement of large groups of refugees along major migration routes, it is reasonable to model this situation using deterministic models. 
+    Stochastic Differential Equations are used in the stock market because individual factors cannot be influenced. This may be a way to realistically model the randomness of individual refugee movement. However, this type of model is difficult to optimize, which may make it difficult to meet our objective to optimize refugee movement. The use of stochastic programming may allow for optimization of the model. Stochastic effects are generally more important when you are dealing with small population sizes \cite{vries}. Since stochastic effects will likely have little impact on the overall movement of large groups of refugees along major migration routes, it is reasonable to model this situation using deterministic models. 
 
     Propogater models
 
@@ -90,73 +89,7 @@ This problem breaks down into multiple problems.
 
     Starting with a basic model, each possible country near Europe where there may be a substantial refugee population is represented as a vertex on a graph. The edges between vertices represent the connectivity between locations for refugees. Rates of travel along edges may vary based on qualities of the travel route including capacity, distance, modes of transportation available and risk to migrants. Once these variables and parameters are related on a graph, we need to learn about the dynamics of the system.
 
-
-    One way to inform the movement of refugees from their country of origin into safe haven countries is to learn about how our system behaves when safety and efficiency are optimized. Safety and efficiency are optimized when risk is minimized and \underline{\ \ \ \ }, respectively. Risk and \underline{\ \ \ \ } can be combined linearly, resulting in an overall measure that determines We chose to use linear programming (as in \cite{bertsekas}) to optimize our system because it can always be solved. 
-
-    Question?
-
-    \item {\bf Propose a set of policies to the UN}
-
-    Write a report to the UN, proposing a set of policies to enact which will support the conditions for optimal migration (optimal to the UN's views).
-\end{enumerate}
-
-Immigrants travel multiple routes -- beginning at the middle east, and travelling through the West, East, and Central Mediterranean, the West Balkans, the Eastern Borders, and from Albania to Greece.
-
-\begin{center}
-\includegraphics[scale=0.5]{travelmap}
-\end{center}
-
-\begin{enumerate}
-    \item The majority of refugees resettle in the middle eastern countries of Jordan, Lebanon, and Turkey.
-    \item 1,015,078 refugees arrived by sea in 2015.
-    \item 942,000 refugees sought asylum in the European Union in 2015\footnote{Eurostat}.
-    \item 315,000 have sought asylum in Germany, yet more than 1 million have been counted in Germany's EASY system\footnote{http://www.bbc.com/news/world-europe-34131911}.
-    \item 174,055 applied in Hungary.
-\end{enumerate}
-
-Illegal immigration is dangerous, both for political relationships ensuring sustained immigration, and the danger to the immigrants of crossing the border. Poorly managed camps in Hungary damaged migrants reputation, leading to a surge in the popularity of the radical nationalist Jobbik party\footnote{http://www.bbc.com/news/world-europe-34280460}. It is difficult to control the way countries will handle the immigration crises, so this is an exogenous factor. In other countries, such as Germany, strong moral foundations protect the influx of immigration\footnote{http://www.bbc.com/news/world-europe-33700624}, with little (and strongly opposed) backlash at the new immigration policies. The Paris attacks threatened relations about refugees. A Polish minister stated that ``we were too idealistic'' \footnote{http://www.bbc.com/news/world-europe-34826438}. The attack deepened the level of insecurity across Europe, since it was believed that the terrorists snuck into the country with refugees. Regardless of the truth of these facts (the only known attackers are French and Belgian residents), the coinciding events were treated as such, and has lead to border problems in the country.
-
-The difference in each country's utility to hold refugees is integral to how important it is to uphold their immigration policy. Economically, immigration should be beneficial to host countries in the long term. A well defined immigration policy, distributed across the continent, should not be a problem
-
-\begin{enumerate}
-    \item Our best evidence suggests that immigration is usually economically beneficial for host countries. The majority of refugees arriving on European shores are able-bodied and unlikely to be an exception to this general rule. So the best way for Europe to help would be to offer immediate legal residency and access to labour markets. It might be politically expedient to restrict access to some welfare benefits but most migrants will be keen to work regardless\footnote{http://www.telegraph.co.uk/news/worldnews/europe/11845205/Why-do-refugees-and-migrants-come-to-Europe-and-what-must-be-done-to-ease-the-crisis.html}.
-\end{enumerate}
-
-Note that our proposal is a short term proposal. The only way to permanantly ease the migrant situation in Europe is to end the conflicts that make people flee their countries in the first place. Therefore, we should only project our models into short time periods in the future (5 years?). How much do refugees move once they enter countries? Evidence to suggest immigrants attempt to flee Hungary and enter Germany.
-
-Things to research for tomorrow:
-\begin{enumerate}
-    \item History, pertaining to dangers and effects of certain decisions on immigration policy.
-    \item The UN's framework and objectives for the goals of refugee immigration.
-
-    Under the general UN assembly, a refugee has the unconditional right to return home.
-
-    \item How NGOs fit into the immigration picture.
-
-    s
-
-    \item How much does immigration cost?
-
-    Typically, the total cost for processing and accommodating asylum seekers can be in the range of €8 000 and €12 0000 per application for the first year, although the figure may be much lower for fast track processing\footnote{http://www.oecd.org/migration/How-will-the-refugee-surge-affect-the-European-economy.pdf -- GOOD ECONOMIC PAPER}. 4 years after social assistance, 75\% of immigrants moved out of social assistance.
-
-    \item Look up the application for official refugee status.
-
-    Look in paper\footnote{$http://fra.europa.eu/sites/default/files/fra-focus_02-2015_legal-entry-to-the-eu.pdf$} and also\footnote{$https://www.hrw.org/report/2015/11/16/europes-refugee-crisis/agenda-action$}.
-
-    The first step for a refugee is to arrive and register in a UNHCR refugee camp outside of Syria. The UNHCR then refers those who pass the first stage of vetting to the U.S. government refugee process (as described above). The National Counterterrorism Center, the Terrorist Screening Center, the Department of Defense, the FBI, Department of Homeland Security, and the State Department use biometrics and biographical information gleaned through several interviews of the refugee and third-party persons who know him or could know him to make sure applicants really are who they claim to be, to evaluate their security risk, and to investigate whether they are suspected of criminal activity or terrorism.  Numerous medical checks are also performed.  During this entire screening process, which takes about three years for Syrians, the refugee has to wait in the camp. If there is any evidence that the refugee is a security threat, he or she is not allowed to come to the United States\footnote{http://www.cato.org/blog/syrian-refugees-dont-pose-serious-security-threat}.
-
-    \item How many immigrants do we need to accomodate?
-
-    3 Million refugees to enter the EU by the end of 2016\footnote{http://www.independent.co.uk/news/world/europe/eu-expecting-another-3-million-refugees-migrants-before-end-of-2016-a6722096.html}.
-
-    \item What Routes do immigrants take - what type of transportation are they taking?
-
-    \item Where are immigrants trying to go?
-
-    \item Quotas for countries.
-\end{enumerate}
-
-$http://www.pewresearch.org/fact-tank/2015/04/24/refugees-stream-into-europe-where-they-are-not-welcomed-with-open-arms/ft_15-04-22_eu-immigration/$
+    One way to inform the movement of refugees from their country of origin into safe haven countries is to learn about how our system behaves when safety and efficiency are optimized. Safety and efficiency are optimized when risk and route length are minimized, respectively. Risk and length can be combined linearly, resulting in an overall measure that determines We chose to use linear programming (as in \cite{bertsekas}) to optimize our system because it can always be solved. 
 
 
 \section{Refugee Movement Optimization}
