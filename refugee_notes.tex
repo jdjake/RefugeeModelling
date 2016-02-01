@@ -7,14 +7,17 @@
 \usepackage{cite}
 \usepackage{tikz}
 \usepackage{verbatim}
-\usepackage{verbatim}
 \usepackage[active,tightpage]{preview}
 \usepackage{fancyheadings}
+\usepackage{graphicx}
+\usepackage{lastpage}
+\usepackage{hyperref}
 
 \pagestyle{fancy}
 
 \fancyhead[C]{Team 53506}
-\fancyhead[R]{\thepage}
+\fancyhead[R]{Page \thepage\ of \pageref{LastPage}}
+\fancyfoot{}
 
 \title{Safer Migration Strategies For Refugee Populations}
 \author{Team 53506}
@@ -22,14 +25,14 @@
 \begin{document}
 
 \pagenumbering{gobble}
+
 \maketitle
 \tableofcontents
-
-\maketitle
-
 \newpage
 
 \pagenumbering{arabic}
+
+\section{Introduction}
 
 Humanitarian organizations that aim to settle refugees in Europe are currently facing new challenges because refugees are coming from outside Europe in larger numbers than ever before \cite{simpson}. One of these organizations, the office of the United Nations High Commissioner for Refugees (UNHCR) was initially formed in 1950 with the intent to help Europeans displaced by World War II \cite{historyUNHCR}. Since its inception the UNHCR has provided aid to refugees, internally dispaced people, stateless people, and asylum seekers from emergencies originating within Europe and, increasingly, outside of Europe \cite{historyUNHCR}.
 
@@ -37,13 +40,12 @@ Conflict and poor governance are seen as the main reasons that people become ref
 
 Any proposal regarding large volumes of refugee movement should be considered a short term proposal. The resources available for refugee aid are finite, and the impetus for humanitarian aid may decrease over time, causing assumptions that are used to determine optimal travel routes to become inaccurate over longer time periods. The only way to permanantly ease the migrant situation in Europe is to end the conflicts that make people flee their countries in the first place. Therefore, we should only project our models into short time periods in the future.
 
-Immigrants travel multiple routes -- beginning at the middle east, and travelling through the West, East, and Central Mediterranean, the West Balkans, the Eastern Borders, and from Albania to Greece.
-CITE TRAVEL MAP
-
+\begin{figure}[h]
 \begin{center}
 \includegraphics[scale=0.5]{travelmap}
-\cite{BBCgraphics}
+\caption{Immigrants travel multiple routes -- beginning at the middle east, and travelling through the West, East, and Central Mediterranean, the West Balkans, the Eastern Borders, and from Albania to Greece. \cite{BBCgraphics}}
 \end{center}
+\end{figure}
 
 The political climate surrounding refugee aid in Europe is highly variable and subject to rapid change. Poorly managed camps in Hungary have damaged the reputation of migrants, leading to a surge in the popularity of the radical nationalist Jobbik party \cite{thorpe}. The way countries will handle immigration crises cannot be deterministically modeled, so this is considered to be an exogenous factor. In other countries, such as Germany, strong moral foundations protect the influx of immigration, with little (and strongly opposed) backlash at the new immigration policies \cite{hill}. In addition, unpredicted disasters such as the Paris attacks may threaten refugee relations with their host countries. In November 2015, the incoming Polish Minister for European Affairs said ``we will accept refugees only if we have security guarantees'' \cite{hewitt}. The Paris attacks deepened the level of mistrust towards refugees across Europe, since it was believed that the terrorists snuck into the country with refugees. Regardless of the truth of these facts (the only known attackers are French and Belgian residents), the coinciding events were treated as such, and has lead to border problems in the country. Although the only known terrorists were French and Belgian residents, if there is increased mistrust towards refugees that may lead to changes in publically acceptable refugee policy.
 
@@ -70,6 +72,7 @@ This problem breaks down into multiple problems.
     To gain a better understanding of the factors involved in refugee movement we will create a model of optimal refugee movement, considering accessibility of transport, safety of route, and resource capacities of countries. 
 
     We consider European and select neighbouring countries as nodes on a graph. Edges represent the paths on which refugees may travel. If policy is implemented so that refugee travel to and from a specific country is blocked, then the connectivity of that point is set to zero to represent an absence of refugee travel to that country. Given a known number of refugees at a number of entry points. Need to optimize distribution.
+\end{enumerate}
 
     Modelling methods considered:
     Stochastic Differential Equations are used in the stock market because individual factors cannot be influenced. This may be a way to realistically model the randomness of individual refugee movement. However, this type of model is difficult to optimize, which may make it difficult to meet our objective to optimize refugee movement. The use of stochastic programming may allow for optimization of the model. Stochastic effects are generally more important when you are dealing with small population sizes \cite{vries}. Since stochastic effects will likely have little impact on the overall movement of large groups of refugees along major migration routes, it is reasonable to model this situation using deterministic models for an initial model of the system.
@@ -82,7 +85,7 @@ This problem breaks down into multiple problems.
 
     Starting with a basic model, each possible country near Europe where there may be a substantial refugee population is represented as a vertex on a graph. The edges between vertices represent the connectivity between locations for refugees. Rates of travel along edges may vary based on qualities of the travel route including capacity, distance, modes of transportation available and risk to migrants. Once these variables and parameters are related on a graph, we need to learn about the dynamics of the system.
 
-    One way to inform the movement of refugees from their country of origin into safe haven countries is to learn about how our system behaves when safety and efficiency are optimized. Safety and efficiency are optimized when risk and route length are minimized, respectively. Risk and length can be combined linearly, resulting in an overall measure that determines We chose to use linear programming (as in \cite{bertsekas}) to optimize our system because it can always be solved. 
+    One way to inform the movement of refugees from their country of origin into safe haven countries is to learn about how our system behaves when safety and efficiency are optimized. Safety and efficiency are optimized when risk and route length are minimized, respectively. Risk and length can be combined linearly, resulting in an overall measure that determines We chose to use linear programming (as in \cite{bertsekas}) to optimize our system because it can always be solved.
 
 \section{Refugee Movement Optimization}
 
@@ -94,7 +97,7 @@ Recommended refugee quotas for each country based on the GDP and population of t
 
 Our model assumes the use of such statistics, provided as a parameter for the system. We shall denote the capacity of a country $w$ as $C_w$, and the refugee productions of a country $v$ as $R_v$. The model detailed assumes that $\sum R_v \leq \sum C_w$, to obtain a feasible solution to the optimization procedure. Of course, as we can see from the European reaction to the refugee crisis, there may be a much greater demand of resources than can be accomodated. Regardless of a country's refusal to admit more refugees, desparate refugees will find a way to flee their home country, though perhaps to a subacceptable destination. To model this, we place `substandard' camps with capacities large enough to contain what other countries are unable to maintain.
 
-We begin by forming a directed graph, whose nodes are countries, and whose edges are possible paths for refugees to take to obtain asylum. We consider any particular refugee's journey to be a simple path in the graph, because refugees are unlikely to take cyclic routes. More importantly to us, the UN should not guide refugees to take such non-optimal routes. For each simple path $(v_1, \dots, v_n)$, we allocate a number $x_{(v_1, \dots, v_n)} \in \mathbf{R}$, which represents the approximate number of refugees travelling along that path. The constraints are summarized by the equations below.
+We begin by forming a directed graph, whose nodes are countries, and whose edges are possible paths for refugees to take to obtain asylum. We consider any particular refugee's journey to be a simple path in the graph, because refugees are unlikely to take cyclic routes. More importantly for us, the UN should not guide refugees to take such non-optimal routes. For each simple path $(v_1, \dots, v_n)$, we allocate a number $x_{(v_1, \dots, v_n)} \in \mathbf{R}$, which represents the approximate number of refugees travelling along that path. The constraints are summarized by the equations below.
 
 \begin{enumerate}
     \item (No Refugee Left Behind) For every country $v$ producing refugees,
@@ -121,7 +124,7 @@ We formulate risk as a quadratic functional, with certain quantified factors des
     %
     \[ K_{(v_1, \dots, v_n)} = \sum_{i = 1}^n \left( \prod_{j = 1}^{i-1} \left(1 - K_{(v_j,v_{j+1})} \right) \right) K_{(v_i, v_{i+1})} \]
 
-    \item {\it Route overcrowding}. In an overcrowded group of refugees, disease, violence, and crime are likely to cause harm, so we must manage traveller density in order to reduce risk. We assume the number of interactions within a population is quadratically proportional to population density. It follows that the risk factors of disease, violence and crime, all due to population interaction, are also quadratically propertional to density. We assume that there exists a constant $B_{(v_1, \dots, v_n)}$ for each route $(v_1, \dots, v_n)$ such that the health compromising rates for a group of $n$ people are proportions to $B_{(v_1, \dots, v_n)} n^2$. We shall also have to consider `correlation rates', since two paths $(v_1, \dots, v_n)$ may coincide in such a way to cause congestion, leading to a rate of the form $B_{(v_1, \dots, v_n), (w_1, \dots, w_m)} n m$, where $m$ is the group travelling along a path $(w_1, \dots, w_m)$. Of course, for routes that never coincide, this value may be zero. For notational homogeneity, we shall also denote $B_{(v_1, \dots, v_n)}$ by $B_{(v_1, \dots, v_n), (v_1, \dots, v_n)}$. Derivation of these constants will be obtained in the next section.
+    \item {\it Route overcrowding}. In an overcrowded group of refugees, disease, violence, and crime are likely to cause harm, so we must manage traveller density in order to reduce risk. We assume the number of interactions within a population is quadratically proportional to population density. It follows that the risk factors of disease, violence and crime, all due to population interaction, are also quadratically propertional to density. We assume that there exists a constant $B_{(v_1, \dots, v_n)}$ for each route $(v_1, \dots, v_n)$ such that the health compromising rates for a group of $n$ people are proportions to $B_{(v_1, \dots, v_n)} n^2$. In general, we shall have to consider `correlation rates', since two paths $(v_1, \dots, v_n)$ may coincide in such a way to cause congestion, leading to a rate of the form $B_{(v_1, \dots, v_n), (w_1, \dots, w_m)} n m$, where $m$ is the group travelling along a path $(w_1, \dots, w_m)$. Of course, for routes that never coincide, this value may be zero. For notational homogeneity, we shall also denote $B_{(v_1, \dots, v_n)}$ by $B_{(v_1, \dots, v_n), (v_1, \dots, v_n)}$. Derivation of these constants will be obtained in the next section.
 \end{enumerate}
 
 Our risk functional and constraints form a quadratic program. To summarize, our quadratic program is described in the following form.
@@ -134,7 +137,7 @@ Our risk functional and constraints form a quadratic program. To summarize, our 
     &\ \ \ \ \ \sum_{\substack{(v_1, \dots, v_n) \\ v_n = w}} x_{(v_1, \dots, v_n)} \leq C_w
 \end{align*}
 %
-Any of your favourite quadratic optimization methods will find an optimum solutions to this problem.
+Any of your favourite quadratic optimization methods will find an optimum solution to this problem.
 
 \section{Deriving Path Correlation Coefficients}
 
@@ -142,9 +145,12 @@ In its current form, our linear program does not take into account the intersect
 
 Intersection of different refugee paths becomes an issue when trying to find the path correlation coefficients $B_{(v_1, \dots, v_n) (w_1, \dots, w_m)}$. Consider the diagram below, consisting of two curves, together with parameterizations $c$ and $c'$ with unit velocity. These curve represent one of the possible paths that refugees can take. When we model the movement of refugees as a single point on the line, then the movement of two groups of refugees coincides when $c(t) = c'(t)$. If the traces of $c$ and $c'$ intersect, but hit all points in the intersection at different times, then our model would determine that these groups never meet each other. On the other hand, we cannot just take the traces as evidence for congestion, for we would like to increase the importance of an intersection $c(t) = c(t')$ when $t$ and $t'$ are very close, and decrease the importance when the time points are far apart. After a long time, most refugees will have moved away from this point, so congestion is near negligable. We solve this problem by taking a stochastic movement along these curves, determining the expected intersection probability when two groups encounter one another.
 
+\begin{figure}[h]
 \begin{center}
-
+\includegraphics[scale=0.6]{differentpaths}
+\caption{Allocating a group of immigrants to either of these paths should congest the route of the other path. Image obtained from \cite{twocurve}.}
 \end{center}
+\end{figure}
 
 To accomodate the random motion of population migration, we apply the theory of stochastic processes, as developed in \cite{lawler}. Begin by making the following assumptions
 %
@@ -166,12 +172,6 @@ where $\varepsilon$ is a small constant, and $W_t$ is standard brownian motion. 
 which sums up the possible instances of intersection. Theoretically, this is an approximation. Practically, this method should perform well in practice; really, two people can never be in the {\it exact} same location at a particular time, so our model really does model the correct situation, provided we pick $\varepsilon'$ so that `vicinity' is small enough for two populations to affect one another, and big enough to obtain accurate interaction estimates. To calculate the integral, we perform some method of approximation. Due to the arbitrary nature of the parameterizations, an analytic form is impossible to obtain.
 
 Our method above also allows us to extend our model to additional timeframes. We can now consider waves of immigrants, which begin at different time periods. Using the correlation coefficient determination method above (modified to take into account different time parameterizations).
-
-\section{Metrics of Refugee Crisis}
-
-\begin{center}
-\includegraphics[scale=0.5]{ImmigrationPoll}
-\end{center}
 
 \bibliographystyle{plain}
 \bibliography{refugee_citations}
