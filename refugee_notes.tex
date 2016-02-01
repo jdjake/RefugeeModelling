@@ -11,6 +11,7 @@
 \usepackage{fancyheadings}
 \usepackage{graphicx}
 \usepackage{lastpage}
+\usepackage{hyperref}
 
 \pagestyle{fancy}
 
@@ -26,11 +27,9 @@
 \begin{document}
 
 \pagenumbering{gobble}
+
 \maketitle
 \tableofcontents
-
-\maketitle
-
 \newpage
 
 \pagenumbering{arabic}
@@ -43,13 +42,12 @@ Conflict and poor governance are seen as the main reasons that people become ref
 
 Any proposal regarding large volumes of refugee movement should be considered a short term proposal. The resources available for refugee aid are finite, and the impetus for humanitarian aid may decrease over time, causing assumptions that are used to determine optimal travel routes to become inaccurate over longer time periods. The only way to permanantly ease the migrant situation in Europe is to end the conflicts that make people flee their countries in the first place. Therefore, we should only project our models into short time periods in the future.
 
-Immigrants travel multiple routes -- beginning at the middle east, and travelling through the West, East, and Central Mediterranean, the West Balkans, the Eastern Borders, and from Albania to Greece.
-CITE TRAVEL MAP
-
+\begin{figure}[h]
 \begin{center}
 \includegraphics[scale=0.5]{travelmap}
-\cite{BBCgraphics}
+\caption{Immigrants travel multiple routes -- beginning at the middle east, and travelling through the West, East, and Central Mediterranean, the West Balkans, the Eastern Borders, and from Albania to Greece. \cite{BBCgraphics}}
 \end{center}
+\end{figure}
 
 The political climate surrounding refugee aid in Europe is highly variable and subject to rapid change. Poorly managed camps in Hungary have damaged the reputation of migrants, leading to a surge in the popularity of the radical nationalist Jobbik party \cite{thorpe}. The way countries will handle immigration crises cannot be deterministically modeled, so this is considered to be an exogenous factor. In other countries, such as Germany, strong moral foundations protect the influx of immigration, with little (and strongly opposed) backlash at the new immigration policies \cite{hill}. In addition, unpredicted disasters such as the Paris attacks may threaten refugee relations with their host countries. In November 2015, the incoming Polish Minister for European Affairs said ``we will accept refugees only if we have security guarantees'' \cite{hewitt}. The Paris attacks deepened the level of mistrust towards refugees across Europe, since it was believed that the terrorists snuck into the country with refugees. Regardless of the truth of these facts (the only known attackers are French and Belgian residents), the coinciding events were treated as such, and has lead to border problems in the country. Although the only known terrorists were French and Belgian residents, if there is increased mistrust towards refugees that may lead to changes in publically acceptable refugee policy.
 
@@ -76,6 +74,7 @@ This problem breaks down into multiple problems.
     To gain a better understanding of the factors involved in refugee movement we will create a model of optimal refugee movement, considering accessibility of transport, safety of route, and resource capacities of countries. 
 
     We consider European and select neighbouring countries as nodes on a graph. Edges represent the paths on which refugees may travel. If policy is implemented so that refugee travel to and from a specific country is blocked, then the connectivity of that point is set to zero to represent an absence of refugee travel to that country. Given a known number of refugees at a number of entry points. Need to optimize distribution.
+\end{enumerate}
 
     Modelling methods considered:
     Stochastic Differential Equations are used in the stock market because individual factors cannot be influenced. This may be a way to realistically model the randomness of individual refugee movement. However, this type of model is difficult to optimize, which may make it difficult to meet our objective to optimize refugee movement. The use of stochastic programming may allow for optimization of the model. Stochastic effects are generally more important when you are dealing with small population sizes \cite{vries}. Since stochastic effects will likely have little impact on the overall movement of large groups of refugees along major migration routes, it is reasonable to model this situation using deterministic models for an initial model of the system.
@@ -175,8 +174,6 @@ where $\varepsilon$ is a small constant, and $W_t$ is standard brownian motion. 
 which sums up the possible instances of intersection. Theoretically, this is an approximation. Practically, this method should perform well in practice; really, two people can never be in the {\it exact} same location at a particular time, so our model really does model the correct situation, provided we pick $\varepsilon'$ so that `vicinity' is small enough for two populations to affect one another, and big enough to obtain accurate interaction estimates. To calculate the integral, we perform some method of approximation. Due to the arbitrary nature of the parameterizations, an analytic form is impossible to obtain.
 
 Our method above also allows us to extend our model to additional timeframes. We can now consider waves of immigrants, which begin at different time periods. Using the correlation coefficient determination method above (modified to take into account different time parameterizations).
-
-\section{Metrics of Refugee Crisis}
 
 \bibliographystyle{plain}
 \bibliography{refugee_citations}
