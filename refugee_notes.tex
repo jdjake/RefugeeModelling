@@ -7,14 +7,16 @@
 \usepackage{cite}
 \usepackage{tikz}
 \usepackage{verbatim}
-\usepackage{verbatim}
 \usepackage[active,tightpage]{preview}
 \usepackage{fancyheadings}
+\usepackage{graphicx}
+\usepackage{lastpage}
 
 \pagestyle{fancy}
 
 \fancyhead[C]{Team 53506}
-\fancyhead[R]{\thepage}
+\fancyhead[R]{Page \thepage\ of \pageref{LastPage}}
+\fancyfoot{}
 
 \usetikzlibrary{arrows}
 
@@ -32,6 +34,8 @@
 \newpage
 
 \pagenumbering{arabic}
+
+\section{Introduction}
 
 Humanitarian organizations that aim to settle refugees in Europe are currently facing new challenges because refugees are coming from outside Europe in larger numbers than ever before\footnote{http://www.bbc.com/news/world-35091772}. One of these organizations, the office of the United Nations High Commissioner for Refugees (UNHCR) was initially formed in 1950 with the intent to help Europeans displaced by World War II\footnote{http://www.unhcr.org/pages/49c3646cbc.html}. Since its inception the UNHCR has provided aid to refugees, internally dispaced people, stateless people, and asylum seekers from emergencies originating within Europe and, increasingly, outside of Europe.\footnote{http://www.unhcr.org/pages/49c3646cbc.html}.
 
@@ -106,15 +110,12 @@ This problem breaks down into multiple problems.
 
     Write a report to the UN, proposing a set of policies to enact which will support the conditions for optimal migration (optimal to the UN's views).
 \end{enumerate}
-<<<<<<< HEAD
 
 The 1951 refugee convention defines a refugee to be ``owing to a well-founded fear of being persecuted for reasons of race, religion, nationality, membership of a particular social group or political opinion, is outside the country of his nationality, and is unable to, or owing to such fear, is unwilling to avail himself of the protection of that country''\footnote{http://www.unhcr.org/pages/49da0e466.html}, rather than a migrant, who is just someone moving from one country to another.
 
 Immigrants travel multiple routes -- beginning at the middle east, and travelling through the West, East, and Central Mediterranean, the West Balkans, the Eastern Borders, and from Albania to Greece.
 
-\begin{center}
-\includegraphics[scale=0.5]{travelmap}
-\end{center}
+\includegraphics{travelmap}
 
 \begin{enumerate}
     \item The majority of refugees resettle in the middle eastern countries of Jordan, Lebanon, and Turkey.
@@ -177,7 +178,7 @@ Obvious by our choice of words, we consider an optimization problem. Under reali
 
 Statistics provided by REPUTABLE SOURCE enable us to approximate the refugee capacity of each country we are considering. By additional analysis of ANOTHER REPUTABLE SOURCE, we can estimate the projected refugees produced in 2016. Details of such statistics used can be found in table INSERT TABLE HERE PLEASE. Our model assumes the use of such statistics, provided as a parameter to the system. We shall denote the capacity of a country $w$ as $C_w$, and the refugee productions of a country $v$ as $R_v$. The model detailed assumes that $\sum R_v \leq \sum C_w$, to obtain a feasible solution to the optimization procedure. Of course, as we can see from the European reaction to the refugee crisis, there may be a much greater demand of resources than can be accomodated. Regardless of a country's refusal to admit more refugees, desparate refugees will find a way to flee their home country, though perhaps to a subacceptable destination. To model this, we place `substandard' camps with capacities large enough to contain what other countries are unable to maintain.
 
-We begin by forming a directed graph, whose nodes are countries, and whose edges are possible paths for refugees to take to obtain asylum. We consider any particular refugee's journey to be a simple path in the graph, because refugees are unlikely to take cyclic routes. More importantly to us, the UN should not guide refugees to take such non-optimal routes. For each simple path $(v_1, \dots, v_n)$, we allocate a number $x_{(v_1, \dots, v_n)} \in \mathbf{R}$, which represents the approximate number of refugees travelling along that path. The constraints are summarized by the equations below.
+We begin by forming a directed graph, whose nodes are countries, and whose edges are possible paths for refugees to take to obtain asylum. We consider any particular refugee's journey to be a simple path in the graph, because refugees are unlikely to take cyclic routes. More importantly for us, the UN should not guide refugees to take such non-optimal routes. For each simple path $(v_1, \dots, v_n)$, we allocate a number $x_{(v_1, \dots, v_n)} \in \mathbf{R}$, which represents the approximate number of refugees travelling along that path. The constraints are summarized by the equations below.
 
 \begin{enumerate}
     \item (No Refugee Left Behind) For every country $v$ producing refugees,
@@ -204,7 +205,7 @@ We formulate risk as a quadratic functional, with certain quantified factors des
     %
     \[ K_{(v_1, \dots, v_n)} = \sum_{i = 1}^n \left( \prod_{j = 1}^{i-1} \left(1 - K_{(v_j,v_{j+1})} \right) \right) K_{(v_i, v_{i+1})} \]
 
-    \item {\it Route overcrowding}. In an overcrowded group of refugees, disease, violence, and crime are likely to cause harm, so we must manage traveller density in order to reduce risk. We assume the number of interactions within a population is quadratically proportional to population density. It follows that the risk factors of disease, violence and crime, all due to population interaction, are also quadratically propertional to density. We assume that there exists a constant $B_{(v_1, \dots, v_n)}$ for each route $(v_1, \dots, v_n)$ such that the health compromising rates for a group of $n$ people are proportions to $B_{(v_1, \dots, v_n)} n^2$. We shall also have to consider `correlation rates', since two paths $(v_1, \dots, v_n)$ may coincide in such a way to cause congestion, leading to a rate of the form $B_{(v_1, \dots, v_n), (w_1, \dots, w_m)} n m$, where $m$ is the group travelling along a path $(w_1, \dots, w_m)$. Of course, for routes that never coincide, this value may be zero. For notational homogeneity, we shall also denote $B_{(v_1, \dots, v_n)}$ by $B_{(v_1, \dots, v_n), (v_1, \dots, v_n)}$. Derivation of these constants will be obtained in the next section.
+    \item {\it Route overcrowding}. In an overcrowded group of refugees, disease, violence, and crime are likely to cause harm, so we must manage traveller density in order to reduce risk. We assume the number of interactions within a population is quadratically proportional to population density. It follows that the risk factors of disease, violence and crime, all due to population interaction, are also quadratically propertional to density. We assume that there exists a constant $B_{(v_1, \dots, v_n)}$ for each route $(v_1, \dots, v_n)$ such that the health compromising rates for a group of $n$ people are proportions to $B_{(v_1, \dots, v_n)} n^2$. In general, we shall have to consider `correlation rates', since two paths $(v_1, \dots, v_n)$ may coincide in such a way to cause congestion, leading to a rate of the form $B_{(v_1, \dots, v_n), (w_1, \dots, w_m)} n m$, where $m$ is the group travelling along a path $(w_1, \dots, w_m)$. Of course, for routes that never coincide, this value may be zero. For notational homogeneity, we shall also denote $B_{(v_1, \dots, v_n)}$ by $B_{(v_1, \dots, v_n), (v_1, \dots, v_n)}$. Derivation of these constants will be obtained in the next section.
 \end{enumerate}
 
 Our risk functional and constraints form a quadratic program. To summarize, our quadratic program is described in the following form.
@@ -217,17 +218,20 @@ Our risk functional and constraints form a quadratic program. To summarize, our 
     &\ \ \ \ \ \sum_{\substack{(v_1, \dots, v_n) \\ v_n = w}} x_{(v_1, \dots, v_n)} \leq C_w
 \end{align*}
 %
-Any of your favourite quadratic optimization methods will find an optimum solutions to this problem.
+Any of your favourite quadratic optimization methods will find an optimum solution to this problem.
 
 \section{Deriving Path Correlation Coefficients}
 
 In its current form, our linear program does not take into account the intersection of paths formed by travelling refugees. It also assumes that groups of refugees travel deterministically. This obviously does not hold in any practical sense -- No two refugees are completely alike, and react differently in response to different events.
 
-We could discard this assumption as a quirk of the model, besides the fact that it becomes a problem when trying to find the path correlation coefficients $B_{(v_1, \dots, v_n) (w_1, \dots, w_m)}$. Consider the diagram below, consisting of two curves, together with parameterizations $c$ and $c'$ with unit velocity. These curve represent one of the possible paths that refugees can take. When we model the movement of refugees as a single point on the line, then the movement of two groups of refugees coincides when $c(t) = c'(t)$. If the traces of $c$ and $c'$ intersect, but hit all points in the intersection at different times, then our model would determine that these groups never meet each other. On the other hand, we cannot just take the traces as evidence for congestion, for we would like to increase the importance of an intersection $c(t) = c(t')$ when $t$ and $t'$ are very close, and decrease the importance when the time points are far apart. After a long time, most refugees will have moved away from this point, so congestion is near negligable. We solve this problem by taking a stochastic movement along these curves, determining the expected intersection probability when two groups encounter one another.
+We could discard this assumption as a quirk of the model, besides the fact that it becomes a problem when trying to find the path correlation coefficients $B_{(v_1, \dots, v_n) (w_1, \dots, w_m)}$. Consider two curves, together with parameterizations $c$ and $c'$ with unit velocity. These curves represent one of the possible paths that refugees can take. When we model the movement of refugees as a single point on the line, then the movement of two groups of refugees coincides when $c(t) = c'(t)$. If the traces of $c$ and $c'$ intersect, but hit all points in the intersection at different times, then our model would determine that these groups never meet each other. On the other hand, we cannot just take the traces as evidence for congestion, for we would like to increase the importance of an intersection $c(t) = c(t')$ when $t$ and $t'$ are very close, and decrease the importance when the time points are far apart. After a long time, most refugees will have moved away from this point, so congestion is near negligable. We solve this problem by taking a stochastic movement along these curves, determining the expected intersection probability when two groups encounter one another.
 
+\begin{figure}[h]
 \begin{center}
-s
+\includegraphics[scale=0.6]{differentpaths}
+\caption{Allocating a group of immigrants to either of these paths should congest the route of the other path. Image obtained from \cite{twocurve}.}
 \end{center}
+\end{figure}
 
 To accomodate the random motion of population migration, we apply the theory of stochastic processes, as developed in \cite{lawler}. Begin by making the following assumptions
 %
@@ -251,10 +255,6 @@ which sums up the possible instances of intersection. Theoretically, this is an 
 Our method above also allows us to extend our model to additional timeframes. We can now consider waves of immigrants, which begin at different time periods. Using the correlation coefficient determination method above (modified to take into account different time parameterizations).
 
 \section{Metrics of Refugee Crisis}
-
-\begin{center}
-\includegraphics[scale=0.5]{ImmigrationPoll}
-\end{center}
 
 \bibliographystyle{plain}
 \bibliography{refugee_citations}
